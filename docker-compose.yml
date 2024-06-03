@@ -1,22 +1,23 @@
+version: '3'
 services:
   api_gateway:
-    build: ./http-api-gateway
+    build: ./apps/http-api-gateway
     ports:
       - "3000:3000"
     volumes:
-      - ./http-api-gateway/src:/usr/src/app/src
+      - ./apps/http-api-gateway/src:/usr/src/app/src
     command: npm run start:dev
     environment:
       - PORT=3000
   users_microservice:
-    build: ./users-microservice
+    build: ./apps/users-microservice
     volumes:
-      - ./users-microservice/src:/usr/src/app/src
+      - ./apps/users-microservice/src:/usr/src/app/src
     command: npm run start:dev
   payments_microservice:
-    build: ./payments-microservice
+    build: ./apps/payments-microservice
     volumes:
-      - ./payments-microservice/src:/usr/src/app/src
+      - ./apps/payments-microservice/src:/usr/src/app/src
     command: npm run start:dev
   nats:
     image: nats
