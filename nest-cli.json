@@ -24,6 +24,24 @@
       "compilerOptions": {
         "tsConfigPath": "apps/users-microservice/tsconfig.app.json"
       }
+    },
+    "payments-microservice": {
+      "type": "application",
+      "root": "apps/payments-microservice",
+      "entryFile": "main",
+      "sourceRoot": "apps/payments-microservice/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/payments-microservice/tsconfig.app.json"
+      }
+    },
+    "http-api-gateway": {
+      "type": "application",
+      "root": "apps/http-api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/http-api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/http-api-gateway/tsconfig.app.json"
+      }
     }
   }
 }
