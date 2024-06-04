@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "class-validator": "^0.14.1"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.6",
+    "ts-jest": "^29.1.4"
   }
 }
