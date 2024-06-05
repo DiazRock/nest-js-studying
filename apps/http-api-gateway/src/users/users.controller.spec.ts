@@ -4,6 +4,7 @@ import { UsersController } from './users.controller';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import * as rxjs from 'rxjs';
 import { NatsClientModule } from '../nats-client/nats-client.module';
+import { ClientProxy } from '@nestjs/microservices';
 
 
 const expectedUser = {
@@ -17,8 +18,15 @@ describe('UsersController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [NatsClientModule],
       controllers: [UsersController],
+      providers: [
+        {
+          provide: 'NATS_SERVICE',
+          useValue: {
+            send: () => expectedUser
+          }
+        }
+      ]
     })
     .compile();
 
@@ -43,6 +51,12 @@ describe('UsersController', () => {
       expect(err).toBeInstanceOf(HttpException);
       expect(err.message).toBe('User Not Found');
       }
+    });
+  });
+
+  describe('Create user', () => {
+    it('should create an user for the specific id', async () => {
+      expect(await controller.createUser(expectedUser)).toBe('New user created successfully');
     });
   });
 });
