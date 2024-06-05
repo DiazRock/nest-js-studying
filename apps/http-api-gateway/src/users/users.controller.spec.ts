@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { HttpException, INestApplication } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import * as rxjs from 'rxjs';
@@ -30,10 +30,19 @@ describe('UsersController', () => {
   });
 
   describe('Get user by id', () => {
-    jest.spyOn(rxjs, 'lastValueFrom').mockImplementation( async () => expectedUser);
 
     it('should return an user for the specific id', async () => {
+      jest.spyOn(rxjs, 'lastValueFrom').mockImplementation( async () => expectedUser);
       expect(await controller.getUserById('1')).toBe(expectedUser);
+    });
+    it('should return an error for the specific id', async () => {
+      jest.spyOn(rxjs, 'lastValueFrom').mockImplementation( async () => null);
+      try {
+        await controller.getUserById('1')
+      } catch (err) {
+      expect(err).toBeInstanceOf(HttpException);
+      expect(err.message).toBe('User Not Found');
+      }
     });
   });
 });
