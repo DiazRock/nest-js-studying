@@ -23,6 +23,8 @@ services:
     image: nats
     ports:
       - 4222:4222
+    environment:
+      - NATS_URL=nats://localhost:4222
   mysql_db:
     image: mysql
     ports:
