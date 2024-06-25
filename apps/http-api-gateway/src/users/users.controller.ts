@@ -20,10 +20,11 @@ import {
   
     @Post()
     @HttpCode(204)
-    createUser(@Body() createUserDto: CreateUserDto) {
+    async createUser(@Body() createUserDto: CreateUserDto) {
       this.logger.log('Creating user ', createUserDto);
-      this.natsClient.send({ cmd: 'createUser' }, createUserDto);
-      return 'New user created successfully';
+      const { id, username } =  await lastValueFrom(this.natsClient.send({ cmd: 'createUser' }, createUserDto));
+      this.logger.debug('New user created successfully ', createUserDto);
+      return { id, username };
     }
   
     @Get(':id')

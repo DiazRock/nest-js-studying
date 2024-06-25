@@ -56,7 +56,16 @@ describe('UsersController', () => {
 
   describe('Create user', () => {
     it('should create an user for the specific id', async () => {
-      expect(await controller.createUser(expectedUser)).toBe('New user created successfully');
+      jest.spyOn(rxjs, 'lastValueFrom').mockImplementation( async () => {
+        return {
+          id: "userId",
+          username: expectedUser.username
+        }
+      });
+      expect(await controller.createUser(expectedUser)).toStrictEqual({
+        id: "userId",
+        username: expectedUser.username
+      });
     });
   });
 });
