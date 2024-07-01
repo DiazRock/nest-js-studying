@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "setup:docker",
+			"path": "apps/http-api-gateway",
+			"problemMatcher": [],
+			"label": "npm: setup:docker - apps/http-api-gateway",
+			"detail": "docker-compose -f ../../docker-compose.yml up -d"
+		}
+	]
+}

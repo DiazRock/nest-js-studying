@@ -1,0 +1,99 @@
+services:
+  - type: web
+    name: api-gateway
+    env: node
+    plan: free
+    buildCommand: docker build ./apps/http-api-gateway
+    startCommand: npm run start:dev
+    dockerfilePath: ./apps/http-api-gateway/Dockerfile
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: SERVICE_DOMAIN
+        value: api_gateway
+
+  - type: web
+    name: users-microservice
+    env: node
+    plan: free
+    buildCommand: docker build ./apps/users-microservice
+    startCommand: npm run start:dev
+    dockerfilePath: ./apps/users-microservice/Dockerfile
+
+  - type: web
+    name: payments-microservice
+    env: node
+    plan: free
+    buildCommand: docker build ./apps/payments-microservice
+    startCommand: npm run start:dev
+    dockerfilePath: ./apps/payments-microservice/Dockerfile
+
+  - type: web
+    name: auth-service
+    env: node
+    plan: free
+    buildCommand: docker build ./apps/auth
+    startCommand: npm run start:debug
+    dockerfilePath: ./apps/auth/Dockerfile
+    envVars:
+      - key: JWT_SECRET
+        value: your_secret_key
+      - key: JWT_EXPIRATION
+        value: 3600
+      - key: HTTP_PORT
+        value: 3001
+      - key: TCP_PORT
+        value: 3002
+      - key: SECRET_KEY_BASE
+        value: secret
+      - key: MONGO_URI
+        value: mongodb://root:example@mongodb-service:27017
+
+  - type: web
+    name: frontend-app
+    env: node
+    plan: free
+    buildCommand: docker build ./apps/frontend
+    startCommand: npm run start
+    dockerfilePath: ./apps/frontend/Dockerfile
+    envVars:
+      - key: API_BASE_URL
+        value: http://api-gateway:3000
+
+databases:
+  - name: mongodb-service
+    databaseType: mongodb
+    plan: free
+    diskSizeGB: 1
+    envVars:
+      - key: MONGO_INITDB_ROOT_USERNAME
+        value: root
+      - key: MONGO_INITDB_ROOT_PASSWORD
+        value: example
+      - key: MONGODB_DATABASE
+        value: authdb
+
+  - name: mysql-db
+    databaseType: mysql
+    plan: free
+    diskSizeGB: 1
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: root_password_123
+      - key: MYSQL_DATABASE
+        value: nestjs_db
+      - key: MYSQL_USER
+        value: testuser
+      - key: MYSQL_PASSWORD
+        value: testuser123
+
+services:
+  - type: worker
+    name: nats
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    startCommand: nats
+    ports:
+      - port: 4222
+        protocol: TCP
