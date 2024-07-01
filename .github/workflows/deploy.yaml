@@ -27,5 +27,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          branch: gh-pages  # adjust if using a different branch for GitHub Pages
+          branch: develop  # adjust if using a different branch for GitHub Pages
           folder: ./apps/frontend/build  # adjust to your frontend build output path
