@@ -13,8 +13,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install Render CLI
-      run: curl -fsSL https://render.com/install | bash
+    - name: Download Render CLI
+      run: |
+        curl -L -o render.tar.gz https://github.com/renderinc/render/releases/latest/download/render_linux_amd64.tar.gz
+        tar -xzf render.tar.gz
+        chmod +x render
+        sudo mv render /usr/local/bin/
+
+    - name: Verify Render CLI Installation
+      run: render --version
 
     - name: Login to Render
       env:
