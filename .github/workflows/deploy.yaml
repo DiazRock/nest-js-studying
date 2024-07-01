@@ -1,0 +1,25 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Render CLI
+      run: curl -fsSL https://render.com/install | bash
+
+    - name: Login to Render
+      env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      run: render login --api-key $RENDER_API_KEY
+
+    - name: Deploy services to Render
+      run: render deploy --path ./render.yaml
