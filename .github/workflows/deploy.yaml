@@ -15,8 +15,7 @@ jobs:
 
     - name: Download Render CLI
       run: |
-        curl -L -o render.tar.gz https://github.com/renderinc/render/releases/latest/download/render_linux_amd64.tar.gz
-        tar -xzf render.tar.gz
+        curl -L -o render  https://github.com/render-oss/render-cli/releases/download/v0.1.11/render-linux-x86_64
         chmod +x render
         sudo mv render /usr/local/bin/
 
