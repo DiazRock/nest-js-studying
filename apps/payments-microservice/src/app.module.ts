@@ -11,7 +11,7 @@ import { User } from './typeorm/entities/User';
       host: 'mysql_db',
       port: 3307,
       database: 'nestjs_db',
-      entities: [Payment, User],
+      entities: [User, Payment],
       synchronize: true,
       username: 'testuser',
       password: 'testuser123',

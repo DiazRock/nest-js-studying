@@ -30,4 +30,8 @@ export class PaymentsService {
     }
     return null;
   }
+
+  findAll(){
+    return this.paymentsRepository.find({relations: ['user']});
+  }
 }

@@ -1,8 +1,18 @@
 import { NestFactory } from '@nestjs/core';
-import { PaymentsModule } from './Payments/payments-microservice.module';
+import { AppModule } from './app.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(PaymentsModule);
-  await app.listen(3000);
+  console.log('Payments Microservice is Running!');
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.NATS,
+      options: {
+        servers: ['nats://nats'],
+      },
+    },
+  );
+  await app.listen();
 }
 bootstrap();

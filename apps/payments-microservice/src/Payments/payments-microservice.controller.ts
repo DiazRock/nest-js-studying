@@ -1,5 +1,5 @@
 import { Controller, Inject, Logger } from '@nestjs/common';
-import { ClientProxy, EventPattern, Payload } from '@nestjs/microservices';
+import { ClientProxy, EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { CreatePaymentDto } from './dtos/CreatePayment.dto';
 import { PaymentsService } from './payments-microservice.service';
 
@@ -20,5 +20,10 @@ export class PaymentsMicroserviceController {
       return true;
     }
     return false;
+  }
+
+  @MessagePattern({"cmd":"getAllPayments"})
+  getPayments(){
+    return this.paymentsService.findAll();
   }
 }
