@@ -13,19 +13,34 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Download Render CLI
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker images
       run: |
-        curl -L -o render  https://github.com/render-oss/render-cli/releases/download/v0.1.11/render-linux-x86_64
-        chmod +x render
-        sudo mv render /usr/local/bin/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/api_gateway:latest ./apps/http-api-gateway
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/users_microservice:latest ./apps/users-microservice
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/payments_microservice:latest ./apps/payments-microservice
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/auth_service:latest ./apps/auth
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_app:latest ./apps/frontend
+        
+        docker push ${{ secrets.DOCKER_USERNAME }}/api_gateway:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/users_microservice:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/payments_microservice:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/auth_service:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/frontend_app:latest
 
-    - name: Verify Render CLI Installation
-      run: render --version
-
-    - name: Login to Render
+    - name: Deploy to Render
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-      run: render login --api-key $RENDER_API_KEY
-
-    - name: Deploy services to Render
-      run: render deploy --path ./render.yaml
+      run: |
+        curl -X POST https://api.render.com/v1/services/SERVICE_ID/deploys \
+        -H 'Authorization: Bearer $RENDER_API_KEY' \
+        -H 'Content-Type: application/json' \
+        -d '{"clearCache": false}'
