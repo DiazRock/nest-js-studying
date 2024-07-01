@@ -20,7 +20,7 @@ jobs:
         sudo mv render /usr/local/bin/
 
     - name: Verify Render CLI Installation
-      run: render --version
+      run: render --help
 
     - name: Login to Render
       env:
