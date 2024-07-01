@@ -15,8 +15,8 @@ const App = () => {
       <Router>
         <nav>
           <ul className="nav-links">
-            <li><Link to="/register">Register</Link></li>
-            <li><Link to="/login">Login</Link></li>
+            {/* <li><Link to="/register">Register</Link></li>
+            <li><Link to="/login">Login</Link></li> */}
             <li><Link to="/create-user">Create User</Link></li>
             <li><Link to="/list-users">List Users</Link></li>
             <li><Link to="/create-payment">Create Payment</Link></li>
