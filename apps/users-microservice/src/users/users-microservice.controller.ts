@@ -20,6 +20,12 @@ export class UsersMicroserviceController {
     return this.usersService.getUserById(userId);
   }
 
+  @MessagePattern({ cmd: 'getAllUsers' })
+  getUsers(){
+    this.logger.log("Executing the controller method for the message")
+    return this.usersService.getUsers();
+  }
+
   @EventPattern('paymentCreated')
   paymentCreated(@Payload() data: any) {
     this.logger.log('Payment created', data)

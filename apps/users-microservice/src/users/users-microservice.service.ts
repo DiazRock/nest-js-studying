@@ -24,4 +24,9 @@ export class UsersService {
       relations: ['payments'],
     });
   }
+
+  getUsers(){
+    this.logger.log('Getting all the users from the database')
+    return this.usersRepository.find({relations: ['payments']});
+  }
 }

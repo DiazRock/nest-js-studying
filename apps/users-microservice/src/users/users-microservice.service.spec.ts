@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users-microservice.service';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../typeorm/entities/User';
+import { User } from '../typeorm/entities/user';
 import { Payment } from '../typeorm/entities/Payment';
 
 
