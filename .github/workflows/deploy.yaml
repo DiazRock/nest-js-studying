@@ -30,8 +30,7 @@ jobs:
 
       - name: Check builded folder:
         run: | 
-          pwd 
-          ls -alF
+          pwd; ls -alF
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
