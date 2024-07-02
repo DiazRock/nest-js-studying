@@ -28,9 +28,10 @@ jobs:
         run: |
           docker-compose run frontend_app npm run build
 
-      - name: Check builded folder:
+      - name: Check builded folder
         run: | 
-          pwd; ls -alF
+          pwd 
+          ls -alF
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
