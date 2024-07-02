@@ -28,4 +28,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           branch: develop  # adjust if using a different branch for GitHub Pages
-          folder: ./apps/frontend/build  # adjust to your frontend build output path
+          folder: ./apps/frontend/src/build  # adjust to your frontend build output path

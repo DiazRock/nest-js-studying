@@ -75,7 +75,7 @@ services:
   frontend_app:
     build: ./apps/frontend
     volumes:
-    - ./apps/frontend/:/usr/src/app/
+    - ./apps/frontend/src:/usr/src/app/src
     ports:
       - "8080:3000"
     environment:
