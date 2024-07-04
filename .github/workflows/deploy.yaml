@@ -26,6 +26,7 @@ jobs:
       
       - name: Build frontend app
         run: |
+          docker-compose up --no-start frontend_app
           docker-compose start frontend_app
           docker-compose exec frontend_app npm run build
           docker cp frontend:/usr/src/app/build .
