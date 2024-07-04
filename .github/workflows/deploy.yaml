@@ -27,6 +27,7 @@ jobs:
       - name: Build frontend app
         run: |
           docker-compose run frontend_app npm run build
+          docker cp frontend:/usr/src/app/build .
 
       - name: Check builded folder
         run: | 
@@ -37,4 +38,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           branch: main  # adjust if using a different branch for GitHub Pages
-          folder: ../build  # adjust to your frontend build output path
+          folder: ./build  # adjust to your frontend build output path
