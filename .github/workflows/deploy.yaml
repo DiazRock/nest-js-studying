@@ -23,15 +23,10 @@ jobs:
         run: |
           docker-compose build
           docker-compose push
-
-      - name: List available containers
-        run: |
-          docker-compose ps
       
       - name: Build frontend app
         run: |
-          docker-compose run frontend_app npm run build
-          docker cp frontend:/usr/src/app/build .
+          docker-compose run -v ./build:/usr/src/app/build frontend_app npm run build
 
       - name: Check builded folder
         run: | 
