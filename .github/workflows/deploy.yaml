@@ -24,6 +24,10 @@ jobs:
           docker-compose build
           docker-compose push
 
+      - name: List available containers
+        run: |
+          docker-compose ps
+      
       - name: Build frontend app
         run: |
           docker-compose run frontend_app npm run build
