@@ -26,6 +26,7 @@ jobs:
       
       - name: Build frontend app
         run: |
+          docker image ls
           docker run -v ./build:/usr/src/app/build nestjsstudying_frontend_app npm run build
           
 
