@@ -26,10 +26,8 @@ jobs:
       
       - name: Build frontend app
         run: |
-          docker-compose run -d frontend_app /bin/bash
-          docker-compose exec frontend_app npm run build
-          docker cp frontend:/usr/src/app/build .
-          docker-compose stop frontend_app
+          docker run -v ./build:/usr/src/app/build nestjsstudying_frontend_app npm run build
+          
 
       - name: Check builded folder
         run: | 
