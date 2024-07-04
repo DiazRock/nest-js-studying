@@ -83,6 +83,7 @@ services:
     command: npm run start
     networks:
       - app-network
+    container_name: frontend
 
 networks:
   app-network:
