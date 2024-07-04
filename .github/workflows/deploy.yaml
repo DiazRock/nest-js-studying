@@ -28,6 +28,7 @@ jobs:
         run: |
           docker-compose up frontend_app
           docker-compose exec frontend_app npm run build
+          docker cp frontend:/usr/src/app/build .
           docker-compose stop frontend_app
 
       - name: Check builded folder
