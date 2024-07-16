@@ -9,5 +9,6 @@ import { Payment } from '../typeorm/entities/Payment';
   imports: [TypeOrmModule.forFeature([User, Payment])],
   controllers: [UsersMicroserviceController],
   providers: [UsersService],
+  exports: [UsersService]
 })
 export class UsersModule {}

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users-microservice.module';
+import { SeederModule } from './seeder/seeder.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/user';
 import { Payment } from './typeorm/entities/Payment';
@@ -17,6 +18,7 @@ import { Payment } from './typeorm/entities/Payment';
       password: 'testuser123',
     }),
     UsersModule,
+    SeederModule
   ],
   controllers: [],
   providers: [],
