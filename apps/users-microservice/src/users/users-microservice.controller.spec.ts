@@ -14,12 +14,15 @@ describe('UsersMicroserviceService', () => {
   const createUserDto: CreateUserDto = {
     username:'test',
     displayName:'pass',
-    email:'test@'
+    email:'test@',
+    password: 'pass'
   };
   const expectedUser: User = {
     ...createUserDto,
     id: 'idUser',
-    payments: []
+    payments: [],
+    password: "pass",
+    role: "user"
   };
   const payment: Payment = {
     id: 'paymentId',

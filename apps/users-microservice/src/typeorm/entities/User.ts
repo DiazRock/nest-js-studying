@@ -24,4 +24,10 @@ import { Payment } from './Payment';
     @OneToMany(() => Payment, (payment) => payment.user)
     @JoinColumn()
     payments: Payment[];
+
+    @Column({ nullable: false })
+    role: string;
+
+    @Column({ nullable: false })
+    password: string;
   }
