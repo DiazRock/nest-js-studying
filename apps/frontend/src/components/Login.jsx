@@ -1,30 +1,52 @@
 // src/components/Login.jsx
-import React, { useState } from 'react';
+import React from 'react';
+import { Form, Button } from 'semantic-ui-react';
+import { useForm } from 'react-hook-form';
 import { loginUser } from '../services/apiService';
-import '../styles/Form.css';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (e) => {
+  const onSubmit = async (data, e) => {
     e.preventDefault();
     try {
-      const response = await loginUser({ username, password });
-      alert('Login successful!');
-      // Save the token or handle login state
+      await loginUser(data);
+      window.location.href ='/'; // Redirect to home page after successful login
     } catch (error) {
       alert('Login failed');
+      console.error(error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <h2>Login</h2>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <button type="submit">Login</button>
-    </form>
+      <Form.Field>
+      <input
+            placeholder='User Name'
+            type='text'
+            {...register('username',
+              {required: true}
+            )}
+          />
+      </Form.Field>
+      {errors.password && <p>Enter an existing username in the plattform</p>}
+      <Form.Field>
+          <input
+            placeholder='Password'
+            type='password'
+            {...register('password',
+              {required: true}
+            )}
+          />
+        </Form.Field>
+        {errors.password && <p>Enter a Password</p>}
+      <Button type="submit">Login</Button>
+    </Form>
   );
 };
 

@@ -4,12 +4,24 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:300
 
 
 export const registerUser = async (userData) => {
-    return axios.post(`${API_BASE_URL}/register`, userData);
+    console.log(`Registering user ${JSON.stringify(userData)}`);
+    return axios.post(`${API_BASE_URL}/auth/api/register`, userData);
 };
   
-  export const loginUser = async (loginData) => {
-    return axios.post(`${API_BASE_URL}/login`, loginData);
+
+export const loginUser = async (loginData) => {
+    const response = await axios.post(`${API_BASE_URL}/auth/api/login`, loginData);
+    const token = response.data.access_token;
+    const user_id = response.data.user_id;
+    const permissions = response.data.user_permissions;
+    const user_role = response.data.user_role;
+    localStorage.setItem('session', token);
+    localStorage.setItem('userId', user_id);
+    localStorage.setItem('permissions', permissions);
+    localStorage.setItem('user_role', user_role);
+    console.log('User role ', user_role);
 };
+
 
 export const createUser = async (userData) => {
     try {
@@ -23,6 +35,7 @@ export const createUser = async (userData) => {
     }
 };
 
+
 export const createPayment = async (paymentData) => {
     try {
         console.log("Payment data ", paymentData);
@@ -34,10 +47,39 @@ export const createPayment = async (paymentData) => {
     }
 };
 
+
 export const listUsers = async () => {
     return axios.get(`${API_BASE_URL}/users`);
   };
 
+
 export const listPayments = async () => {
     return axios.get(`${API_BASE_URL}/payments`);
   };
+
+export const listPaymentsByUser = async (id) => {
+    return axios.get(`${API_BASE_URL}/payments?id=${id}`);
+  };
+
+export const sessionIsActive = () => {
+    const sessionInfo = localStorage.getItem('session');
+    console.log(`Checking if the user is active ${sessionInfo} ${sessionInfo !== null}`);
+    return localStorage.getItem('session') !== null;
+}
+
+
+export const logoutUser = () => {
+    localStorage.removeItem('session');
+}
+
+export const getUserPermissions = async () => {
+    const user_id = localStorage.getItem('user_id');
+    const jwt = localStorage.getItem('session');
+
+    const permissions = await axios.get(`${API_BASE_URL}/user/permissions/${user_id}`, {
+        headers: {
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    console.log('The permissions!!!! ', permissions);
+}   
