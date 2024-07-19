@@ -15,8 +15,8 @@ export class SeedService implements OnApplicationBootstrap {
     if (adminList.length == 0) {
       const userDto: CreateUserDto = {
         username: 'admin',
-        password: 'adminpassword',
-        email: 'admin@admin.com'
+        email: 'admin@admin.com',
+        password: 'admin',
       }
       this.usersService.createAdmin(userDto);
       this.logger.log('Admin user created.');

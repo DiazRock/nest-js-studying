@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users-microservice.service';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../typeorm/entities/user';
+import { User } from '../typeorm/entities/User';
 import { Payment } from '../typeorm/entities/Payment';
 
 
@@ -19,8 +19,8 @@ describe('UsersMicroserviceService', () => {
     ...createUserDto,
     id: 'idUser',
     payments: [],
-    password: "pass",
-    role: "user"
+    role: "user",
+    permissions: ''
   };
   const payment: Payment = {
     id: 'paymentId',

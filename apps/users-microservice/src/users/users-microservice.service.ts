@@ -1,33 +1,36 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Admin } from '../typeorm/entities/admin'
-import { User } from '../typeorm/entities/user';
+import { User } from '../typeorm/entities/User';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dtos/CreateUser.dto';
+import { UserPermissions } from 'src/enums/user.permissions';
 
 @Injectable()
 export class UsersService {
   private readonly logger: Logger = new Logger(UsersService.name);
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
-    @InjectRepository(User) private adminRepository: Repository<Admin>,
   ) {}
 
   createUser(createUserDto: CreateUserDto) {
-    const newUser = this.usersRepository.create({...createUserDto, role: 'user'});
+    const newUser = this.usersRepository.create({...createUserDto, role: 'user', permissions: ''});
     this.logger.log('Creating user ', createUserDto);
     return this.usersRepository.save(newUser);
   }
 
   createAdmin(createUserDto: CreateUserDto) {
-    const newAdmin = this.adminRepository.create(
+    const newAdmin = this.usersRepository.create(
       {
         ...createUserDto,
         role: 'admin',
-        permissions: ['manage-users', 'edit-content']
+        permissions: [
+          UserPermissions.READ.toString(),
+          UserPermissions.WRITE.toString()
+        ].join(",")
       }
     )
 
+    return this.usersRepository.save(newAdmin);
 
   }
 
@@ -44,11 +47,28 @@ export class UsersService {
     return this.usersRepository.find({relations: ['payments']});
   }
 
-  findByUsername(username: string): Promise<Admin[]> {
-    return this.adminRepository.find({
+  findByUsername(username: string): Promise<User[]> {
+    this.logger.log(`Finding user by username ${username}`)
+    return this.usersRepository.find({
       where: {
         username: username
       }
     });
   }
+
+  async getUserPermissions(id: string): Promise<string> {
+    this.logger.log(`Finding permissions for user ${id}`);
+    const list = await this.usersRepository.find({
+      where: {
+        id: id
+      }
+    });
+    if (list.length > 0){
+      this.logger.log('User is admin');
+      return list[0].permissions;
+    }
+    this.logger.log('User is not an admin');
+    return '';
+  }
+
 }

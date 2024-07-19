@@ -22,8 +22,16 @@ export class UsersMicroserviceController {
 
   @MessagePattern({ cmd: 'getAllUsers' })
   getUsers(){
-    this.logger.log("Executing the controller method for the message")
+    this.logger.log("Getting all the users of the plattform");
     return this.usersService.getUsers();
+  }
+
+  @MessagePattern({ cmd: 'getUserPermissions' })
+  getUserPermissions(@Payload() data){
+    const { id } = data;
+
+    this.logger.log(`Getting user role for user with id ${id}`);
+    return this.usersService.getUserPermissions(id);
   }
 
   @EventPattern('paymentCreated')
