@@ -26,4 +26,9 @@ export class PaymentsMicroserviceController {
   getPayments(){
     return this.paymentsService.findAll();
   }
+
+  @MessagePattern({"cmd":"getUserPayments"})
+  async getPaymentsByUserId(user_id){
+    return await this.paymentsService.findByUserId(user_id);
+  }
 }

@@ -31,6 +31,15 @@ export class PaymentsService {
     return null;
   }
 
+  findByUserId(user_id){
+    return this.paymentsRepository.find({where: {
+      user: {
+        id: user_id
+      }
+    },
+      relations: ['user']});
+
+  }
   findAll(){
     return this.paymentsRepository.find({relations: ['user']});
   }
