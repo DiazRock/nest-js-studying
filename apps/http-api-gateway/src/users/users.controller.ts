@@ -54,23 +54,4 @@ import { User } from 'typeorm/entities/user';
       if (users) return users;
       throw new HttpException('User Not Found', 404);
     }
-
-    @Get('/user/permissions/:id')
-    async getUserPermissions(@Headers() headers: Record <string, string>, @Param() id: string) {
-      this.logger.log(`Getting user permissions for user id ${id}`);
-      const token = headers['Authorization'].split(' ')[1];
-      const decodedToken = await lastValueFrom(
-        this.natsClient.send({
-          cmd: 'decodeToken'
-        },
-        { token })
-      )
-      if (decodedToken.id === id) {
-        const permissions = await lastValueFrom(
-          this.natsClient.send({ cmd: 'getUserPermissions' }, { id })
-        );
-        return permissions;
-      }
-      throw new HttpException('Unauthorized', 401);
-    }
   }
