@@ -1,13 +1,15 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
-import { logoutUser } from '../services/apiService';
+import { useDispatch } from 'react-redux';
+import { LogOutUser } from '../store/loginSlice';
+
 
 const LogOut = () => {
-
+    const dispatch = useDispatch();
     console.log('Log Out component');
     const onSubmit = (event) => {
         event.preventDefault();
-        logoutUser();
+        dispatch(LogOutUser());
         alert('Logged out successfully!');
         window.location.href = "/";  // Redirect to the login page after logout
     }
