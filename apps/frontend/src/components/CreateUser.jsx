@@ -1,5 +1,6 @@
 // src/components/CreateUser.jsx
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { createUser } from '../services/apiService';
 import '../styles/Form.css';
 
@@ -7,11 +8,12 @@ const CreateUser = () => {
   const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
-  console.log("The createUser component")
+  const jwtToken = useSelector((state) => state.loginReducer.jwtSession);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createUser({ username: username, displayName: displayName, email: email });
+      await createUser({ username: username, displayName: displayName, email: email }, jwtToken);
       alert('User created successfully!');
     } catch (error) {
       alert('Failed to create user');
