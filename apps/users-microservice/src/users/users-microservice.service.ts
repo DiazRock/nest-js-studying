@@ -13,7 +13,13 @@ export class UsersService {
   ) {}
 
   createUser(createUserDto: CreateUserDto) {
-    const newUser = this.usersRepository.create({...createUserDto, role: 'user', permissions: ''});
+    const newUser = this.usersRepository.create(
+      {
+        ...createUserDto, 
+        role: 'user', 
+        canEdit: false,
+        canWrite: false,
+      });
     this.logger.log('Creating user ', createUserDto);
     return this.usersRepository.save(newUser);
   }
@@ -23,13 +29,12 @@ export class UsersService {
       {
         ...createUserDto,
         role: 'admin',
-        permissions: [
-          UserPermissions.READ.toString(),
-          UserPermissions.WRITE.toString()
-        ].join(",")
+        canEdit: true,
+        canWrite: true,
       }
     )
 
+    this.logger.log('Admin user defined', JSON.stringify(newAdmin));
     return this.usersRepository.save(newAdmin);
 
   }
@@ -42,9 +47,9 @@ export class UsersService {
     });
   }
 
-  getUsers(){
+  async getUsers(){
     this.logger.log('Getting all the users from the database')
-    return this.usersRepository.find({relations: ['payments']});
+    return await this.usersRepository.find({relations: ['payments']});
   }
 
   findByUsername(username: string): Promise<User[]> {
@@ -56,7 +61,7 @@ export class UsersService {
     });
   }
 
-  async getUserPermissions(id: string): Promise<string> {
+  async getUserPermissions(id: string): Promise<{canEdit: boolean, canWrite: boolean}> {
     this.logger.log(`Finding permissions for user ${id}`);
     const list = await this.usersRepository.find({
       where: {
@@ -65,10 +70,13 @@ export class UsersService {
     });
     if (list.length > 0){
       this.logger.log('User is admin');
-      return list[0].permissions;
+      return {
+        canEdit: list[0].canEdit,
+        canWrite: list[0].canWrite,
+      };
     }
     this.logger.log('User is not an admin');
-    return '';
+    return {canEdit: false, canWrite: false};
   }
 
 }

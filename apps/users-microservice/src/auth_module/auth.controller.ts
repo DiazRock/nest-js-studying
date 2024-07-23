@@ -22,10 +22,13 @@ export class AuthController {
     return await this.authService.register(body);
   }
 
-  @MessagePattern({cmd: 'decodeJWT'})
-  async decodeJWTToken(@Payload() token) {
-    this.logger.log('Decoding JWT token');
-    return this.authService.decodeJwtToken(token);
+  @MessagePattern({cmd: 'isJWTValid'})
+  async isJWTValid(@Payload() { token }) {
+    this.logger.log('Decoding JWT token ');
+    const {username, password, id, role} = this.authService.decodeJwtToken(token);
+    const user = await this.authService.findUserById(id);
+    this.logger.log('User Found ', JSON.stringify(user));
+    return user && user.username == username && user.password == password && user.role == role;
   }
 
 }

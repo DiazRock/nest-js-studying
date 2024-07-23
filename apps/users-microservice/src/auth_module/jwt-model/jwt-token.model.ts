@@ -1,10 +1,15 @@
-import { JwtTokenUserInfo } from './jwt-token-user-info.model'
-
 export class JwtToken {
     
-    public roles: string[];
+    public username: string;
+
+    public password: string;
+
+    public id: string;
     
-    public expTime: number;
+    public role: string;
     
-    public userInfo: JwtTokenUserInfo[];
+    public iat: number;
+    
+    public exp: number;
+    
   }

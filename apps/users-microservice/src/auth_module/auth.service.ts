@@ -17,9 +17,10 @@ export class AuthService {
 
   public decodeJwtToken(authorizationToken: string): JwtToken {
     try {
-      return jwtDecode(authorizationToken);
+      return jwtDecode<JwtToken>(authorizationToken);
     }
     catch (err) {
+      this.logger.error(`Error decoding JWT token: ${err}`);
       throw new UnauthorizedException();
     }
   }
@@ -27,16 +28,21 @@ export class AuthService {
   async login(user: CreateUserDto) {
     this.logger.log("Authenticating the user ", user);
     const users = await this.usersService.findByUsername(user.username);
+    this.logger.log("User founded ", users[0].id);
     const user_info = users[0];
     const id = user_info.id;
-    const user_to_hash = {...user, id};
+    const role = user_info.role;
+    const user_to_hash = {...user, id, role};
     this.logger.log(`User founded`, JSON.stringify(user_info));
-      return {
-        user_id: user_info.id,
-        user_permissions: user_info.permissions,
-        user_role: user_info.role,
-        access_token: this.jwtService.sign(user_to_hash),
-      };
+    const response_object = {
+      userId: id,
+      canWrite: user_info.canWrite,
+      canEdit: user_info.canEdit,
+      userRole: role,
+      accessToken: this.jwtService.sign(user_to_hash),
+    }
+    this.logger.log(`Generated token for user ${id}`);
+    return response_object;
   }
 
   async register(user: CreateUserDto) {
@@ -45,4 +51,7 @@ export class AuthService {
     return {answer: "User registered", user: answ};
   }
 
+  async findUserById(id: string) {
+    return await this.usersService.getUserById(id);
+  }
 }

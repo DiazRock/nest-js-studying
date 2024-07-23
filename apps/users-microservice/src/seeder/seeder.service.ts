@@ -18,7 +18,7 @@ export class SeedService implements OnApplicationBootstrap {
         email: 'admin@admin.com',
         password: 'admin',
       }
-      this.usersService.createAdmin(userDto);
+      await this.usersService.createAdmin(userDto);
       this.logger.log('Admin user created.');
     } else {
       this.logger.log('Admin user already exists.');

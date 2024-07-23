@@ -31,6 +31,9 @@ import { Payment } from './Payment';
     @Column({ nullable: false, default: 'admin' })
     password: string;
 
-    @Column({ type: 'text' })
-    permissions: string;
+    @Column({ type: 'boolean' })
+    canEdit: boolean;
+
+    @Column({ type: 'boolean' })
+    canWrite: boolean;
   }
