@@ -20,13 +20,13 @@ import { NatsClientModule } from './nats-client/nats-client.module';
   controllers: [],
   providers: [],
 })
-export class AppModule{
+export class AppModule {
   // configure(consumer: MiddlewareConsumer) {
   //   consumer
   //     .apply(AuthorizationMiddleware)
   //     .forRoutes(
-  //       { path: 'users/*', method: RequestMethod.ALL },
-  //       { path: 'payments/*', method: RequestMethod.ALL }
+  //       { path: '/users.*', method: RequestMethod.ALL },
+  //       { path: '/payments.*', method: RequestMethod.ALL }
   //     ); // Set the routes that will use the middleware
   // }
 }
