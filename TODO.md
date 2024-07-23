@@ -9,10 +9,10 @@ todo:
 * Add a simple ui
 * Deploy
 
-* Show a two views, one for admin, and one for common user (In Progess) High
+* Show a two views, one for admin, and one for common user (In Progess) High/ Done
 * The common user, can list its payments, and do payments, based on his current income (In progess) Medium
 * Add register form for users (1 days) (Done)
-* For the admin, the can, delete users, create them too, and list all the payments in the app. (In progress) High
+* For the admin, the can, delete users, create them too, and list all the payments in the app. (In progress) High 
 * Sort columns of the tables (1 day)
 * More friendly validation, close to done (In progress) Medium
 * Add a label column for payments Low
