@@ -23,7 +23,8 @@ describe('UsersMicroserviceService', () => {
     payments: [],
     password: 'pass',
     role: "user",
-    permissions: ''
+    canEdit: false,
+    canWrite: false
   };
   const payment: Payment = {
     id: 'paymentId',
