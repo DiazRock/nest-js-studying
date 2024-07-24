@@ -41,7 +41,7 @@ export const createPayment = async (paymentData, jwtSession) => {
         console.log("Payment data ", paymentData);
         console.log("Payment data ", API_BASE_URL);
         const response = await axios.post(
-            `${API_BASE_URL}/payments`, paymentData, 
+            `${API_BASE_URL}/payments`, paymentData,
           {
             headers: {
                 Authorization: `Bearer ${jwtSession}`
@@ -72,8 +72,12 @@ export const listPayments = async (jwtSession) => {
     });
   };
 
-export const listPaymentsByUser = async (id) => {
-    return axios.get(`${API_BASE_URL}/payments?id=${id}`);
+export const listPaymentsByUser = async (id , jwtSession) => {
+    return axios.get(`${API_BASE_URL}/payments?id=${id}`,  {
+        headers: {
+            Authorization: `Bearer ${jwtSession}`
+        }
+    });
   };
 
 export const logoutUser = () => {
