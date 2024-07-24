@@ -5,7 +5,7 @@ export const loginSlice = createSlice({
     initialState: {
         jwtSession: localStorage.getItem('jwtSession') || '',
         userId: localStorage.getItem('userId') || '',
-        canEdit: localStorage.getItem('canEdit') || false,
+        canRead: localStorage.getItem('canRead') || false,
         canWrite: localStorage.getItem('canWrite') || false,
         userRole: localStorage.getItem('userRole') || '',
     },
@@ -14,14 +14,14 @@ export const loginSlice = createSlice({
         localStorage.setItem('jwtSession', payload.accessToken);
         localStorage.setItem('userId', payload.userId);
         localStorage.setItem('canWrite', payload.canWrite);
-        localStorage.setItem('canEdit', payload.canEdit);
+        localStorage.setItem('canRead', payload.canRead);
         localStorage.setItem('userRole', payload.userRole);
       },
       LogOutUser: () => {
         localStorage.removeItem('jwtSession');
         localStorage.removeItem('userId');
         localStorage.removeItem('canWrite');
-        localStorage.removeItem('canEdit');
+        localStorage.removeItem('canRead');
         localStorage.removeItem('userRole');
       },
     },
