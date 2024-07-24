@@ -12,8 +12,15 @@ export class PaymentsController {
   @HttpCode(201)
   async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
     this.logger.log('Creating a payment', createPaymentDto);
-    await this.natsClient.emit('createPayment', createPaymentDto);
+    await lastValueFrom(this.natsClient.emit('createPayment', createPaymentDto));
     return 'Payment created successfully';
+  }
+
+  @Get(':id')
+  async getPaymentsForUser(@Param('id') id: string) {
+    this.logger.log('Listing all existing payments for user ' + id);
+    const listOfPaymentsForUser = await lastValueFrom(this.natsClient.send({cmd: "getPaymentsForUser"}, {userId: id}));
+    return listOfPaymentsForUser;
   }
 
   @Get()
@@ -22,12 +29,5 @@ export class PaymentsController {
     this.logger.log('Listing all existing payments');
     const listOfPayments = await lastValueFrom(this.natsClient.send({cmd: "getAllPayments"}, {}));
     return listOfPayments;
-  }
-
-  @Get('/:id')
-  async getPaymentsForUser(@Param() id: string) {
-    this.logger.log('Listing all existing payments for user ' + id);
-    const listOfPaymentsForUser = await lastValueFrom(this.natsClient.send({cmd: "getPaymentsForUser"}, {userId: id}));
-    return listOfPaymentsForUser;
   }
 }

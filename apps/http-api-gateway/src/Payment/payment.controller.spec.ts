@@ -8,7 +8,8 @@ import { ClientProxy } from '@nestjs/microservices';
 
 const paymentDto: CreatePaymentDto = {
     amount: 100,
-    userId: '1'
+    userId: '1',
+    label: 'test payment'
 }
 
 describe('PaymentsController', () => {

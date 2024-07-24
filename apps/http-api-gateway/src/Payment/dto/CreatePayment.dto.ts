@@ -7,4 +7,7 @@ export class CreatePaymentDto {
 
   @IsNotEmpty()
   userId: string;
+
+  @IsNotEmpty()
+  label: string;
 }
