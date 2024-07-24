@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { User } from '../typeorm/entities/User';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dtos/CreateUser.dto';
-import { UserPermissions } from 'src/enums/user.permissions';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +16,7 @@ export class UsersService {
       {
         ...createUserDto, 
         role: 'user', 
-        canEdit: false,
+        canRead: false,
         canWrite: false,
       });
     this.logger.log('Creating user ', createUserDto);
@@ -29,7 +28,7 @@ export class UsersService {
       {
         ...createUserDto,
         role: 'admin',
-        canEdit: true,
+        canRead: true,
         canWrite: true,
       }
     )
@@ -49,7 +48,9 @@ export class UsersService {
 
   async getUsers(){
     this.logger.log('Getting all the users from the database')
-    return await this.usersRepository.find({relations: ['payments']});
+    const users = await this.usersRepository.find({relations: ['payments']});
+    //this.logger.debug('Users found:', users);
+    return users;
   }
 
   findByUsername(username: string): Promise<User[]> {
@@ -61,7 +62,7 @@ export class UsersService {
     });
   }
 
-  async getUserPermissions(id: string): Promise<{canEdit: boolean, canWrite: boolean}> {
+  async getUserPermissions(id: string): Promise<{canRead: boolean, canWrite: boolean}> {
     this.logger.log(`Finding permissions for user ${id}`);
     const list = await this.usersRepository.find({
       where: {
@@ -71,12 +72,17 @@ export class UsersService {
     if (list.length > 0){
       this.logger.log('User is admin');
       return {
-        canEdit: list[0].canEdit,
+        canRead: list[0].canRead,
         canWrite: list[0].canWrite,
       };
     }
     this.logger.log('User is not an admin');
-    return {canEdit: false, canWrite: false};
+    return {canRead: false, canWrite: false};
   }
 
+
+  async updateUser(user: User): Promise<User> {
+    this.logger.log(`Updating user ${user.id}`);
+    return await this.usersRepository.save(user);
+  }
 }

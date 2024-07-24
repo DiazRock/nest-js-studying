@@ -17,8 +17,6 @@ import { AuthModule } from './auth_module/auth.module';
       synchronize: true,
       username: 'testuser',
       password: 'testuser123',
-      migrationsTableName: "migrations",
-      migrations: [/*...*/] 
     }),
     AuthModule,
     UsersModule,

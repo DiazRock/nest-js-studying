@@ -25,10 +25,16 @@ export class AuthController {
   @MessagePattern({cmd: 'isJWTValid'})
   async isJWTValid(@Payload() { token }) {
     this.logger.log('Decoding JWT token ');
-    const {username, password, id, role} = this.authService.decodeJwtToken(token);
+    const {username, password, id, role, canRead, canWrite} = this.authService.decodeJwtToken(token);
+    this.logger.log('JWT token decoded  ', username, password, id, role, canRead, canWrite);
     const user = await this.authService.findUserById(id);
     this.logger.log('User Found ', JSON.stringify(user));
-    return user && user.username == username && user.password == password && user.role == role;
+    return user 
+          && user.username == username 
+          && user.password == password 
+          && user.role == role;
+          // && user.canRead == canRead
+          // && user.canWrite == canWrite;
   }
 
 }

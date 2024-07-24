@@ -32,8 +32,11 @@ import { Payment } from './Payment';
     password: string;
 
     @Column({ type: 'boolean' })
-    canEdit: boolean;
+    canRead: boolean;
 
     @Column({ type: 'boolean' })
     canWrite: boolean;
+
+    @Column ({type: 'float', default: 500})
+    balance: number;
   }

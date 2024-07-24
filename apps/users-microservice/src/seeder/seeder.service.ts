@@ -17,6 +17,7 @@ export class SeedService implements OnApplicationBootstrap {
         username: 'admin',
         email: 'admin@admin.com',
         password: 'admin',
+        balance: 500,
       }
       await this.usersService.createAdmin(userDto);
       this.logger.log('Admin user created.');

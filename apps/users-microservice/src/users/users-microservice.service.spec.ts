@@ -13,20 +13,23 @@ describe('UsersMicroserviceService', () => {
     username:'test',
     displayName:'pass',
     email:'test@',
-    password: 'pass'
+    password: 'pass',
   };
   const expectedUser: User = {
     ...createUserDto,
     id: 'idUser',
     payments: [],
     role: "user",
-    canEdit: false,
+    canRead: false,
     canWrite: false,
+    balance: 500,
   };
   const payment: Payment = {
     id: 'paymentId',
     amount: 100,
     user: expectedUser,
+    createdAt: new Date(),
+    label: 'test',
   }
 
   beforeEach(async () => {

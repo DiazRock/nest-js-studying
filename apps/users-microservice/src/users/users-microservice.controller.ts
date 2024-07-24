@@ -34,8 +34,12 @@ export class UsersMicroserviceController {
     return this.usersService.getUserPermissions(id);
   }
 
+
   @EventPattern('paymentCreated')
   paymentCreated(@Payload() data: any) {
     this.logger.log('Payment created', data)
+    const { user } = data;
+    this.logger.log(`Updating user ${user}`)
+    return this.usersService.updateUser(user);
   }
 }

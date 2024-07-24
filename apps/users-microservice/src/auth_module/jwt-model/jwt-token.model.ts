@@ -5,8 +5,12 @@ export class JwtToken {
     public password: string;
 
     public id: string;
-    
+
     public role: string;
+    
+    public canRead: boolean;
+
+    public canWrite: boolean;
     
     public iat: number;
     

@@ -37,7 +37,7 @@ export class AuthService {
     const response_object = {
       userId: id,
       canWrite: user_info.canWrite,
-      canEdit: user_info.canEdit,
+      canRead: user_info.canRead,
       userRole: role,
       accessToken: this.jwtService.sign(user_to_hash),
     }
