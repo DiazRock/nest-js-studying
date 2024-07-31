@@ -14,19 +14,27 @@ describe('PaymentsMicroserviceService', () => {
   let paymentsService: PaymentsService;
   const paymentDto: CreatePaymentDto = {
     amount: 100,
-    userId: '1'
+    userId: '1',
+    label: 'test payment'
   }
   const expectedUser: User = {
     username: 'test',
     displayName: 'pass',
     email: 'test@',
     id: '',
-    payments: []
+    payments: [],
+    balance: 500,
+    role: "user",
+    canRead: false,
+    canWrite: false,
+    password: 'testpassword'
   };
   const payment: Payment = {
     id: 'paymentId',
     amount: 100,
     user: expectedUser,
+    createdAt: new Date(),
+    label: 'test',
   }
 
 

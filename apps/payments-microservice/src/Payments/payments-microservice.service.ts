@@ -7,28 +7,45 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { User } from '../typeorm/entities/User';
 
+
 @Injectable()
 export class PaymentsService {
   private readonly logger: Logger = new Logger(PaymentsService.name);
   constructor(
     @InjectRepository(Payment) private paymentsRepository: Repository<Payment>,
-    @Inject('NATS_SERVICE') private natsClient: ClientProxy,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async createPayment({ userId, ...createPaymentDto }: CreatePaymentDto) {
-    const user = await lastValueFrom<User>(
-      this.natsClient.send({ cmd: 'getUserById' }, { userId }),
-    );
-    if (user) {
-      this.logger.log('User associated with the payment ', user);
-      const newPayment = this.paymentsRepository.create({
-        ...createPaymentDto,
-        user,
-      });
-      this.logger.log('Payment to be saved', newPayment);
-      return this.paymentsRepository.save(newPayment);
+  async createPayment(createPaymentDto: CreatePaymentDto) {
+
+    const user: User = await this.userRepository.findOne({
+      where: { id: createPaymentDto.userId },
+      relations: ['payments'],
+    });
+    if (!user) {
+      this.logger.error('User associated to the payment not found');
     }
-    return null;
+    if (user.balance < createPaymentDto.amount) {
+      this.logger.error('User does not have sufficient balance');
+      return null;
+    }
+
+    this.logger.log('User associated with the payment ', user);
+    user.balance -= createPaymentDto.amount;
+    await this.userRepository.save(user);
+    this.logger.log('User balance updated based on the input amount');
+
+    const newPayment: Payment = this.paymentsRepository.create({
+      ...createPaymentDto,
+      user
+    });
+
+    this.logger.debug('Payment to be saved', JSON.stringify(newPayment));
+    
+    const resultedPayment = await this.paymentsRepository.save(newPayment);
+    
+    return resultedPayment;
+  
   }
 
   findByUserId(user_id){
