@@ -16,10 +16,11 @@ export class PaymentsController {
     return 'Payment created successfully';
   }
 
-  @Get(':id')
+  @Get('/:id')
   async getPaymentsForUser(@Param('id') id: string) {
     this.logger.log('Listing all existing payments for user ' + id);
-    const listOfPaymentsForUser = await lastValueFrom(this.natsClient.send({cmd: "getPaymentsForUser"}, {userId: id}));
+    const listOfPaymentsForUser = await lastValueFrom(this.natsClient.send({cmd: "getUserPayments"}, {userId: id}));
+    this.logger.debug('List of payments founded ' + listOfPaymentsForUser);
     return listOfPaymentsForUser;
   }
 
