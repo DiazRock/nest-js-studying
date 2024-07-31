@@ -15,6 +15,7 @@ import { User } from './typeorm/entities/User';
       synchronize: true,
       username: 'testuser',
       password: 'testuser123',
+      logging: 'all'
     }),
     PaymentsModule,
   ],
