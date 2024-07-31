@@ -27,8 +27,7 @@ export const createUser = async (userData, jwtSession) => {
                     Authorization: `Bearer ${jwtSession}`
                 }
             }
-        ).
-        catch(err => console.log('Error createing the user ', err));
+        ).catch(err => console.log('Error createing the user ', err));
         return response.data;
     } catch (error) {
         throw error;
@@ -63,6 +62,14 @@ export const listUsers = async (jwtSession) => {
     );
   };
 
+export const getUserDetails = async (userId, jwtSession) => {
+    return await axios.get(`${API_BASE_URL}/users/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${jwtSession}`
+            }
+        }
+    );
+  };
 
 export const listPayments = async (jwtSession) => {
     return axios.get(`${API_BASE_URL}/payments`, {
@@ -73,7 +80,7 @@ export const listPayments = async (jwtSession) => {
   };
 
 export const listPaymentsByUser = async (id , jwtSession) => {
-    return axios.get(`${API_BASE_URL}/payments?id=${id}`,  {
+    return axios.get(`${API_BASE_URL}/payments/${id}`,  {
         headers: {
             Authorization: `Bearer ${jwtSession}`
         }
