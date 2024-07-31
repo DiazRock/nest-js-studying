@@ -12,6 +12,8 @@ services:
       - SERVICE_DOMAIN=api_gateway
     networks:
       - app-network
+    depends_on:
+      - mysql_db
   users_microservice:
     build: ./apps/users-microservice
     volumes:
@@ -19,6 +21,8 @@ services:
     command: npm run start:dev
     networks:
       - app-network
+    depends_on:
+      - mysql_db
   payments_microservice:
     build: ./apps/payments-microservice
     volumes:
@@ -26,6 +30,8 @@ services:
     command: npm run start:dev
     networks:
       - app-network
+    depends_on:
+      - mysql_db
   nats:
     image: nats
     ports:
@@ -34,16 +40,8 @@ services:
       - NATS_URL=nats://localhost:4222
     networks:
       - app-network
-  # mongodb_service:
-  #   image: mongo
-  #   ports:
-  #     - 27018:27017
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=root
-  #     - MONGO_INITDB_ROOT_PASSWORD=example
-  #     - MONGODB_DATABASE="authdb"
-  #   networks:
-  #     - app-network
+    depends_on:
+      - mysql_db
   mysql_db:
     image: mysql
     ports:
