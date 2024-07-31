@@ -43,9 +43,9 @@ Otherwise you can register in the app, and you will be automatically redirected 
 We have 4 apps inside the [apps](https://gitlab.musala.com/alejandro.diaz/nest-js-studying/-/tree/main/apps/main) folder:
 
 * [Frontend](#Frontend)
+* [Http Gateway](#Http Gateway)
 * [Payment Microservice](#Payment Microservice)
 * [User Microservice](#User Microservice)
-* [Http Gateway](#Http Gateway)
 
 
 ## Fronted
