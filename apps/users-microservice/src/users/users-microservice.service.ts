@@ -49,7 +49,7 @@ export class UsersService {
   async getUsers(){
     this.logger.log('Getting all the users from the database')
     const users = await this.usersRepository.find({relations: ['payments']});
-    //this.logger.debug('Users found:', users);
+    this.logger.debug('Users found:', users);
     return users;
   }
 
