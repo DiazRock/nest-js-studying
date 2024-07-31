@@ -19,9 +19,8 @@ const ListPayments = () => {
         alert('Failed to fetch payments');
       }
     };
-
     fetchPayments();
-  }, []);
+  }, [jwtToken]);
 
   return (
     <div>
@@ -29,17 +28,19 @@ const ListPayments = () => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>Payment ID</th>
+            <th>Label</th>
             <th>Amount</th>
-            <th>User Name</th>
+            <th>Created At</th>
+            <th>Done by user</th>
           </tr>
         </thead>
         <tbody>
           {payments.map((payment) => (
             <tr key={payment.id}>
-              <td>{payment.id}</td>
+              <td>{payment.label}</td>
               <td>${payment.amount}</td>
-              <td>{payment.user.username}</td>
+              <td>{payment.createdAt}</td>
+              <td>{payment.user? payment.user.username: 'user null!' }</td>
             </tr>
           ))}
         </tbody>

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { UserPermissions } from "../utils/permissions";
 
 const AdminDashboard = ({permissions}) => {
     console.log("Admin Dashboard", permissions);

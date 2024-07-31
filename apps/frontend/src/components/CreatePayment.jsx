@@ -1,37 +1,71 @@
 // src/components/CreatePayment.js
-import React, { useState } from 'react';
+import React from 'react';
 import { createPayment } from '../services/apiService';
-import { Form } from './Form';
-import { Input } from './Input';
-import '../styles/Form.css';
-import { num_validation, name_validation } from '../utils/inputValidations';
+import { Form, Button } from 'semantic-ui-react';
+import { useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { errorMessage } from '../styles'; 
+
 
 const CreatePayment = () => {
-  const [userId, setUserId] = useState('');
-  const [amount, setAmount] = useState('');
+  const jwtToken = useSelector((state) => state.loginReducer.jwtSession);
+  const userId = useSelector((state) => state.loginReducer.userId);
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (e, {amount, userId}) => {
+  const onSubmit = async ({label, inputAmount}, e) => {
     e.preventDefault()
     try {
-      await createPayment({ amount, userId  });
+      const amount = Number(inputAmount)
+      await createPayment({ amount, userId, label }, jwtToken);
+      alert ('Payment created successfully :)');
       return true;
     } catch (error) {
       console.error('Failed to create payment', error);
-      return false
+      return false;
     }
   };
 
   return (
     <Form
-          submitCallBack={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           successText="Payment created successfully"
-          listOfInputs={ [num_validation, name_validation] }
-    />
-      /* <h2>Create Payment</h2>
-      <Input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="User ID" />
-      <Input type="text" value={amount} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Amount" />
-      <button type="submit">Create Payment</button> */
-    
+    >
+        <h2>Create Payment</h2>
+        <Form.Field>
+          <input 
+            type="text"  
+            placeholder="Label" 
+            {...register('label', {
+              required: true,
+            })}
+            />
+        </Form.Field>
+        {errors.label && <p style={errorMessage}>Please enter a label for the payment</p>}
+
+        <Form.Field>
+            <input 
+              type="number" 
+              placeholder="Set amount of the payment" 
+              {...register('inputAmount', {
+                required: true,
+                validator: (amount) => {
+                  if (Number(watch(amount)) > 0) {
+                    return true;
+                  }
+                  return false;
+                }
+              })}
+            />
+
+        </Form.Field>
+        {errors.amount && <p style={errorMessage}>Amount must be a positive number</p>}
+        <Button type="submit">Create Payment</Button>
+    </Form>
   );
 };
 

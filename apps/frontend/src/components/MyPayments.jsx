@@ -1,18 +1,19 @@
 // src/components/ListPayments.js
 import React, { useEffect, useState } from 'react';
-import { useParams} from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { listPaymentsByUser } from '../services/apiService';
 import '../styles/List.css';
 
 const MyPayments = () => {
   const [payments, setPayments] = useState([]);
-  const { id } = useParams();
+  const userId = useSelector((state) => state.loginReducer.userId);
+  const jwtToken = useSelector((state) => state.loginReducer.jwtSession);
 
   useEffect(() => {
     const fetchPayments = async () => {
       try {
         console.log("Listing the payments ");
-        const response = await listPaymentsByUser(id);
+        const response = await listPaymentsByUser(userId, jwtToken);
         console.log("The response ", response);
         setPayments(response.data);
       } catch (error) {
@@ -21,7 +22,7 @@ const MyPayments = () => {
     };
 
     fetchPayments();
-  }, []);
+  }, [userId, jwtToken]);
 
   return (
     <div>
@@ -32,15 +33,17 @@ const MyPayments = () => {
       <table className="user-table">
         <thead>
           <tr>
-            <th>Payment ID</th>
+            <th>Label</th>
             <th>Amount</th>
+            <th>Date Of Creation</th>
           </tr>
         </thead>
         <tbody>
           {payments.map((payment) => (
             <tr key={payment.id}>
-              <td>{payment.id}</td>
+              <td>{payment.label}</td>
               <td>${payment.amount}</td>
+              <td>${payment.createdAt}</td>
             </tr>
           ))}
         </tbody>

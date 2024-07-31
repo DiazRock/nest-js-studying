@@ -1,14 +1,15 @@
 import InitialPage from './InitialPage';
 import AdminDashboard from './AdminDashboard';
+import UserDashboard from './UserDashboard';
 import { useSelector } from 'react-redux';
 import LogOut from './LogOut';
 
 const HomeComponent = () => {
   const jwtToken = useSelector((state) => state.loginReducer.jwtSession);
-  const canEdit = useSelector((state) => state.loginReducer.canEdit);
+  const canRead = useSelector((state) => state.loginReducer.canRead);
   const canWrite = useSelector((state) => state.loginReducer.canWrite);
   const userRole = useSelector((state) => state.loginReducer.userRole);
-  console.log('The jwtToken ', jwtToken, canEdit, canWrite, userRole);
+  console.log('The decoded info ', jwtToken, canRead, canWrite, userRole);
     if (jwtToken === '') {
       return (
         <>
@@ -21,7 +22,7 @@ const HomeComponent = () => {
       console.log('The user is an admin');
       return (
         <>
-          <AdminDashboard permissions ={[canEdit, canWrite]}/>
+          <AdminDashboard permissions ={[canRead, canWrite]}/>
           <LogOut />
         </>
         
@@ -31,6 +32,7 @@ const HomeComponent = () => {
     if (userRole === 'user') {
       return (
         <>
+          <UserDashboard />
           <LogOut />
         </>
       )
