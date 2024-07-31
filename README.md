@@ -40,11 +40,20 @@ Otherwise you can register in the app, and you will be automatically redirected 
 
 ## Architecture definition
 
-We have 4 apps inside the [apps/] folder:
+We have 4 apps inside the [apps](https://gitlab.musala.com/alejandro.diaz/nest-js-studying/-/tree/main/apps/main) folder:
 
-* Frontend
-* Payment Microservice
-* User Microservice
-* Http Gateway
+* [Frontend](#Frontend)
+* [Payment Microservice](#Payment Microservice)
+* [User Microservice](#User Microservice)
+* [Http Gateway](#Http Gateway)
+
+
+## Fronted
+
+## Http Gateway
+
+## Payment Microservice
+
+## User Microservice
 
 
