@@ -24,4 +24,19 @@ import {
     @OneToMany(() => Payment, (payment) => payment.user)
     @JoinColumn()
     payments: Payment[];
+    
+    @Column({ nullable: false })
+    role: string;
+
+    @Column({ nullable: false, default: 'admin' })
+    password: string;
+
+    @Column({ type: 'boolean' })
+    canRead: boolean;
+
+    @Column({ type: 'boolean' })
+    canWrite: boolean;
+
+    @Column ({type: 'float', default: 500})
+    balance: number;
   }

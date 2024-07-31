@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users-microservice.service';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../typeorm/entities/user';
+import { User } from '../typeorm/entities/User';
 import { Payment } from '../typeorm/entities/Payment';
 
 
@@ -13,19 +13,23 @@ describe('UsersMicroserviceService', () => {
     username:'test',
     displayName:'pass',
     email:'test@',
-    password: 'pass'
+    password: 'pass',
   };
   const expectedUser: User = {
     ...createUserDto,
     id: 'idUser',
     payments: [],
-    password: "pass",
-    role: "user"
+    role: "user",
+    canRead: false,
+    canWrite: false,
+    balance: 500,
   };
   const payment: Payment = {
     id: 'paymentId',
     amount: 100,
     user: expectedUser,
+    createdAt: new Date(),
+    label: 'test',
   }
 
   beforeEach(async () => {

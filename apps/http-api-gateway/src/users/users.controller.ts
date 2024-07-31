@@ -8,7 +8,8 @@ import {
     HttpException,
     HttpCode,
     InternalServerErrorException,
-    HttpStatus
+    HttpStatus,
+    Headers
   } from '@nestjs/common';
   import { ClientProxy } from '@nestjs/microservices';
   import { CreateUserDto } from './dtos/CreateUser.dto';

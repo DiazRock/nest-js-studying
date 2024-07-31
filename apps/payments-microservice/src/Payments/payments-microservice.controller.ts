@@ -13,10 +13,10 @@ export class PaymentsMicroserviceController {
   @EventPattern('createPayment')
   async createPayment(@Payload() createPaymentDto: CreatePaymentDto) {
     this.logger.debug('Payload for create the payment received ', createPaymentDto)
-    const newPayment =
+    const response =
       await this.paymentsService.createPayment(createPaymentDto);
-    if (newPayment) {
-      this.natsClient.emit('paymentCreated', newPayment);
+    if (response) {
+      this.natsClient.emit('paymentCreated', response);
       return true;
     }
     return false;
@@ -25,5 +25,12 @@ export class PaymentsMicroserviceController {
   @MessagePattern({"cmd":"getAllPayments"})
   getPayments(){
     return this.paymentsService.findAll();
+  }
+
+  @MessagePattern({"cmd":"getUserPayments"})
+  async getPaymentsByUserId({userId}){
+    const payments = await this.paymentsService.findByUserId(userId);
+    this.logger.debug('Payments for user '+ userId +' are\n ', payments);
+    return payments;
   }
 }

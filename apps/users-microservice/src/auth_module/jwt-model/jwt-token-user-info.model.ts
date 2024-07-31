@@ -8,5 +8,7 @@ export class JwtTokenUserInfo {
     public mail: string;
   
     public id: string[];
+
+    public password: string;
   
   }

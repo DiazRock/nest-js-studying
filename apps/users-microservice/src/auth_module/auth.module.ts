@@ -1,27 +1,19 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users/users.service';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
-import { NatsClientModule } from '../nats-client/nats-client.module';
-import { UsersModule } from './users/users.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from '../users/users-microservice.module';
 import * as dotenv from 'dotenv';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/typeorm/entities/User';
 
 dotenv.config();
 
-
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017"
 @Module({
   imports: [
-    MongooseModule.forRoot(MONGO_URI, {
-
-    }),
+    TypeOrmModule.forFeature([User]),
     UsersModule,
-    NatsClientModule,
-    PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secretKey',
       signOptions: { expiresIn: '60m' },
@@ -29,5 +21,6 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017"
   ],
   providers: [ AuthService, JwtStrategy],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

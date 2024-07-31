@@ -15,10 +15,11 @@ export class SeedService implements OnApplicationBootstrap {
     if (adminList.length == 0) {
       const userDto: CreateUserDto = {
         username: 'admin',
-        password: 'adminpassword',
-        email: 'admin@admin.com'
+        email: 'admin@admin.com',
+        password: 'admin',
+        balance: 500,
       }
-      this.usersService.createAdmin(userDto);
+      await this.usersService.createAdmin(userDto);
       this.logger.log('Admin user created.');
     } else {
       this.logger.log('Admin user already exists.');

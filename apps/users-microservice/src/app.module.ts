@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users-microservice.module';
 import { SeederModule } from './seeder/seeder.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './typeorm/entities/user';
+import { User } from './typeorm/entities/User';
 import { Payment } from './typeorm/entities/Payment';
+import { AuthModule } from './auth_module/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { Payment } from './typeorm/entities/Payment';
       username: 'testuser',
       password: 'testuser123',
     }),
+    AuthModule,
     UsersModule,
     SeederModule
   ],

@@ -1,4 +1,4 @@
-import { Controller, Inject, Post, Body, Logger, HttpCode, Get } from '@nestjs/common';
+import { Controller, Inject, Post, Body, Logger, HttpCode, Get, Param } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePaymentDto } from './dto/CreatePayment.dto';
 import { lastValueFrom } from 'rxjs';
@@ -12,8 +12,16 @@ export class PaymentsController {
   @HttpCode(201)
   async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
     this.logger.log('Creating a payment', createPaymentDto);
-    await this.natsClient.emit('createPayment', createPaymentDto);
+    await lastValueFrom(this.natsClient.emit('createPayment', createPaymentDto));
     return 'Payment created successfully';
+  }
+
+  @Get('/:id')
+  async getPaymentsForUser(@Param('id') id: string) {
+    this.logger.log('Listing all existing payments for user ' + id);
+    const listOfPaymentsForUser = await lastValueFrom(this.natsClient.send({cmd: "getUserPayments"}, {userId: id}));
+    this.logger.debug('List of payments founded ' + listOfPaymentsForUser);
+    return listOfPaymentsForUser;
   }
 
   @Get()

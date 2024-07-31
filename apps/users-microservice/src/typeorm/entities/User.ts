@@ -12,7 +12,7 @@ import { Payment } from './Payment';
     @PrimaryGeneratedColumn('uuid')
     id: string;
   
-    @Column({ nullable: false })
+    @Column({ nullable: false, unique: true })
     username: string;
   
     @Column({ nullable: false })
@@ -28,6 +28,15 @@ import { Payment } from './Payment';
     @Column({ nullable: false })
     role: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: false, default: 'admin' })
     password: string;
+
+    @Column({ type: 'boolean' })
+    canRead: boolean;
+
+    @Column({ type: 'boolean' })
+    canWrite: boolean;
+
+    @Column ({type: 'float', default: 500})
+    balance: number;
   }

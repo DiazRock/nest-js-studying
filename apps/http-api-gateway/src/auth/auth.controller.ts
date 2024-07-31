@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Logger, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Logger, Param, Post, Request, Headers } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
@@ -7,7 +7,7 @@ export class AuthController {
     private readonly logger = new Logger(AuthController.name);
     constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy) {}
     
-    @Post('/api/user/login')
+    @Post('/api/login')
     async login(@Body() body) {
         this.logger.log('Login user ', body);
         return await lastValueFrom(this.natsClient.send({ cmd: 'loginUser' }, {username: body.username, password: body.password}));
@@ -15,10 +15,9 @@ export class AuthController {
   
     @Post('/api/register')
     async register(@Body() body) {
-      const { username, password } = body;
       this.logger.log('Registering user ', body.username);
       return await lastValueFrom(this.natsClient.send({cmd: "registerUser"}, {
-        username: username, password: password
+        ...body
       }));
     }
 }
