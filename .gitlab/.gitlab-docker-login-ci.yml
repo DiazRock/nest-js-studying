@@ -1,0 +1,8 @@
+image:
+  name: docker/compose:latest
+
+
+login-docker:
+  stage: .pre
+  script:
+    - echo $DOCKER_PASSWORD | docker login --username diazrock --password-stdin

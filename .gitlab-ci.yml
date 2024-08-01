@@ -1,12 +1,30 @@
+variables:
+  DOCKER_HOST: tcp://thedockerhost:2375/
+  DOCKER_DRIVER: overlay2
+
+image:
+  name: docker/compose:latest
+
+services:
+ - name: docker:dind
+   alias: thedockerhost
+
+setup:
+  stage: .pre
+  script:
+    - echo $DOCKER_PASSWORD | docker login index.docker.io --username diazrock --password-stdin
+
 build-job:
   stage: build
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - docker-compose down
+    - docker-compose build
 
-test-job1:
+setup-environment:
   stage: test
   script:
-    - echo "This job tests something"
+    - echo "Running docker compose"
+    - docker-compose up -d --build
 
 test-job2:
   stage: test

@@ -1,4 +1,4 @@
-import { Controller, Inject, Post, Body, Logger, HttpCode, Get, Param } from '@nestjs/common';
+import { Controller, Inject, Post, Body, Logger, HttpCode, Get, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePaymentDto } from './dto/CreatePayment.dto';
 import { lastValueFrom } from 'rxjs';
@@ -12,8 +12,13 @@ export class PaymentsController {
   @HttpCode(201)
   async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
     this.logger.log('Creating a payment', createPaymentDto);
-    await lastValueFrom(this.natsClient.emit('createPayment', createPaymentDto));
-    return 'Payment created successfully';
+    const response = await lastValueFrom(this.natsClient.send('createPayment', createPaymentDto));
+    this.logger.debug('Payment created successfully', response);
+    const {error} = response;
+    if (error !== undefined) {
+      this.logger.error('Error creating payment', error);
+      throw new HttpException(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    } 
   }
 
   @Get('/:id')

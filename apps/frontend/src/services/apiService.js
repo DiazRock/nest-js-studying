@@ -38,16 +38,18 @@ export const createUser = async (userData, jwtSession) => {
 export const createPayment = async (paymentData, jwtSession) => {
     try {
         console.log("Payment data ", paymentData);
-        console.log("Payment data ", API_BASE_URL);
+        console.log("API URL ", API_BASE_URL);
         const response = await axios.post(
             `${API_BASE_URL}/payments`, paymentData,
           {
             headers: {
                 Authorization: `Bearer ${jwtSession}`
             }
-          }).catch(err => console.log('Error making payment ', err));
+          });
+        console.log("The response ", response);
         return response.data;
     } catch (error) {
+        console.log("The error ", error);
         throw error;
     }
 };
