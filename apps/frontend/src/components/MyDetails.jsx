@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import { Form } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { getUserDetails } from '../services/apiService';
 import '../styles/List.css';

@@ -21,10 +21,12 @@ const CreatePayment = () => {
     e.preventDefault()
     try {
       const amount = Number(inputAmount)
-      await createPayment({ amount, userId, label }, jwtToken);
+      const reponse = await createPayment({ amount, userId, label }, jwtToken);
+      console.log('Payment created successfully', reponse);
       alert ('Payment created successfully :)');
       return true;
     } catch (error) {
+      alert ('Failed to createt payment :(');
       console.error('Failed to create payment', error);
       return false;
     }

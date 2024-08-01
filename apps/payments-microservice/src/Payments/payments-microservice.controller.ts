@@ -16,10 +16,11 @@ export class PaymentsMicroserviceController {
     const response =
       await this.paymentsService.createPayment(createPaymentDto);
     if (response) {
+      this.logger.debug('Payment created successfully', response);
       this.natsClient.emit('paymentCreated', response);
-      return true;
+      return response;
     }
-    return false;
+    return { error: 'Error creating payment'};
   }
 
   @MessagePattern({"cmd":"getAllPayments"})
