@@ -22,6 +22,12 @@ todo:
 * Add security to the rpc calls between microservices and the endpoint calls. (half a a day) [Status: new]
 * JWT for http endpoints (In progress) High / Done
 
+
+
 * Better visualization of error messages /In Progress.
+* Change the default ammount for the user from the admin panel.
+* Check the numbers in the input forms.
+* Fix the view for the user with the payments selector.
+* Tests.
 
 NOTE: User create payments and can see them, admins too.
