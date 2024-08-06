@@ -18,6 +18,11 @@ export class PaymentsService {
 
   async createPayment(createPaymentDto: CreatePaymentDto) {
 
+    if (createPaymentDto.amount < 0) {
+      this.logger.error('Payment amount cannot be negative');
+      return null;
+    }
+
     const user: User = await this.userRepository.findOne({
       where: { id: createPaymentDto.userId },
       relations: ['payments'],
@@ -25,6 +30,7 @@ export class PaymentsService {
     if (!user) {
       this.logger.error('User associated to the payment not found');
     }
+    
     if (user.balance < createPaymentDto.amount) {
       this.logger.error('User does not have sufficient balance');
       return null;
