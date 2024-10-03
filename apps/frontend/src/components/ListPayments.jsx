@@ -11,9 +11,7 @@ const ListPayments = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        console.log("Listing the payments ");
         const response = await listPayments(jwtToken);
-        console.log("The response ", response);
         setPayments(response.data);
       } catch (error) {
         alert('Failed to fetch payments');

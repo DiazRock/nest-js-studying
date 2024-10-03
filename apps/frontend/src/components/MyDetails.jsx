@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
 import { getUserDetails } from '../services/apiService';
 import '../styles/List.css';
 
 const MyDetails = () => {
     const [userDetails, setUserDetails] = useState([]);
-    const userId = useSelector((state) => state.loginReducer.userId);
+    const { id } = useParams();
     const jwtToken = useSelector((state) => state.loginReducer.jwtSession);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
           try {
-            console.log("Getting user details");
-            const response = await getUserDetails(userId, jwtToken);
-            console.log("The response ", response);
+            const response = await getUserDetails(id, jwtToken);
             setUserDetails(response.data);
           } catch (error) {
             alert('Failed to fetch user details');
@@ -21,9 +20,7 @@ const MyDetails = () => {
         };
     
         fetchUserDetails();
-    }, [userId, jwtToken]);
-    
-    console.log(`User details ${JSON.stringify (userDetails)}`);
+    }, [id, jwtToken]);
     return (
         <table className='user-table'>
             <thead>
