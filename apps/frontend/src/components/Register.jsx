@@ -53,16 +53,30 @@ const Register = ({Header}) => {
           <input
             placeholder='User Name'
             type='text'
-            {...register('username', { required: true, maxLength: 10 })}
+            {...register('username', 
+              {
+                required: 'Username is required',
+                maxLength: {
+                  value: 10,
+                  message: 'Username cannot exceed 10 characters',
+                },
+              }
+            )}
           />
+          {errors.username && <p style={errorMessage}>{errors.username.message}</p>}
         </Form.Field>
-        {errors.username && <p style={errorMessage}>Please check the User Name</p>}
         <Form.Field>
           <input
             placeholder='Display name (Optional)'
             type='text'
-            {...register('displayname', { maxLength: 10 })}
+            {...register('displayname', { 
+                maxLength: {
+                    value: 10,
+                    message: 'Display name cannot exceed 10 characters',
+                  } 
+              })}
           />
+          {errors.displayname && <p style={errorMessage}>{errors.displayname.message}</p>}
         </Form.Field>
         {errors.displayname && <p style={errorMessage}>Please check the Display Name</p>}
         <Form.Field>
@@ -70,31 +84,36 @@ const Register = ({Header}) => {
             placeholder='Email'
             type='email'
             {...register('email', {
-              required: true,
-              pattern:
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              required: 'Email is required',
+              pattern: {
+                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'Please enter a valid email address',
+              },
             })}
           />
+          {errors.email && <p style={errorMessage}>{errors.email.message}</p>}
         </Form.Field>
-        {errors.email && <p style={errorMessage}>Please check the Email</p>}
         <Form.Field>
           <input
             placeholder='Password'
             type='password'
             {...register('password', {
-              required: true,
-              pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+              required: 'Password is required',
+              pattern: {
+                value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
+                message: 'Password must be 6-15 characters and include at least one uppercase letter, one lowercase letter, and one number',
+              },
             })}
           />
+          {errors.password && <p style={errorMessage}>{errors.password.message}</p>}
         </Form.Field>
-        {errors.password && <p style={errorMessage}>Please check the Password</p>}
 
         <Form.Field>
           <input
           placeholder='Confirm Password'
           type='password'
           {...register("confirm_password", {
-            required: true,
+            required: 'Please confirm your password',
             validate: (val) => {
               if (watch('password') !== val) {
                 return "Your passwords do no match";
@@ -102,19 +121,26 @@ const Register = ({Header}) => {
             },
           })}
           />
+          {errors.confirm_password && <p style={errorMessage}>{errors.confirm_password.message}</p>}
         </Form.Field>
-        {errors.confirm_password && <p style={errorMessage}>Password must match</p>}
-        <Form.Field>
-          {userRole === 'admin' &&
-          <input
-          id = "balance_quantity"
-          placeholder='Add balance'
-          type='number'
-          min = "1"
-          max = "100000"
-          {...register("balance")}
-          />}
-        </Form.Field>
+
+        {userRole === 'admin' && (
+          <Form.Field>
+            <input
+              id="balance_quantity"
+              placeholder="Add balance"
+              type="number"
+              max="100000"
+              {...register('balance', {
+                required: 'Balance is required for admin',
+                valueAsNumber: true,
+                validate: (value) =>
+                  value > 0 || 'Balance must be a positive number',
+              })}
+            />
+            {errors.balance && <p style={errorMessage}>{errors.balance.message}</p>}
+          </Form.Field>
+        )}
         <Button type='submit'>Submit</Button>
       </Form>
     </div>
