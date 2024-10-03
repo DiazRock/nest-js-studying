@@ -9,7 +9,6 @@ const HomeComponent = () => {
   const canRead = useSelector((state) => state.loginReducer.canRead);
   const canWrite = useSelector((state) => state.loginReducer.canWrite);
   const userRole = useSelector((state) => state.loginReducer.userRole);
-  console.log('The decoded info ', jwtToken, canRead, canWrite, userRole);
     if (jwtToken === '') {
       return (
         <>
@@ -17,9 +16,7 @@ const HomeComponent = () => {
         </>
       )
     }
-    console.log('The user role is ', userRole);
     if (userRole === "admin") {
-      console.log('The user is an admin');
       return (
         <>
           <AdminDashboard permissions ={[canRead, canWrite]}/>

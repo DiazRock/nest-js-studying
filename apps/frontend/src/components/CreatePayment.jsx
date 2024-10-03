@@ -22,7 +22,6 @@ const CreatePayment = () => {
     try {
       const amount = Number(inputAmount)
       const reponse = await createPayment({ amount, userId, label }, jwtToken);
-      console.log('Payment created successfully', reponse);
       alert ('Payment created successfully :)');
       return true;
     } catch (error) {
