@@ -1,4 +1,4 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller, Logger, NotFoundException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
@@ -13,7 +13,18 @@ export class AuthController {
   @MessagePattern({ cmd: 'loginUser' })
   async login(@Payload() req) {
     this.logger.log('Login user ', req);
-    return this.authService.login(req);
+    return await this.authService.login(req)
+    .catch(error => {
+      this.logger.error('Error logging in user ', error);
+      if (error instanceof NotFoundException) {
+        this.logger.error('User not found', req.username);
+        return {
+          message_error: `User not found ${req.username}`,
+          type_error: `NotFoundException`
+        }
+      }
+      throw error;
+    });
   }
 
   @MessagePattern({ cmd: 'registerUser' })
@@ -33,8 +44,6 @@ export class AuthController {
           && user.username == username 
           && user.password == password 
           && user.role == role;
-          // && user.canRead == canRead
-          // && user.canWrite == canWrite;
   }
 
 }
