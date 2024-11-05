@@ -1,10 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpException } from '@nestjs/common';
 import { PaymentsController } from './payments.controller';
 import { CreatePaymentDto } from './dto/CreatePayment.dto';
-import * as rxjs from 'rxjs';
-import { NatsClientModule } from '../nats-client/nats-client.module';
-import { ClientProxy } from '@nestjs/microservices';
+import { MockClientProxy } from '../../test/mocks/client-proxy.mock';
 
 const paymentDto: CreatePaymentDto = {
     amount: 100,
@@ -21,9 +18,7 @@ describe('PaymentsController', () => {
       providers: [
         {
           provide: 'NATS_SERVICE',
-          useValue: {
-            emit: async (paymentDto: CreatePaymentDto) => paymentDto
-          }
+          useClass: MockClientProxy
         }
       ]
     })
@@ -37,6 +32,12 @@ describe('PaymentsController', () => {
   });
 
   it('should create a payment successfully ', async () => {
-    expect(await controller.createPayment(paymentDto)).toBe('Payment created successfully');
+    expect(await controller.createPayment(paymentDto)).toStrictEqual(
+      {
+        "amount": 100, 
+        "label": "test_label", 
+        "paymentId": "p1", 
+        "user": {}
+      });
   })
 });

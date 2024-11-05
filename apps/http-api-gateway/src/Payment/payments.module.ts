@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { NatsClientModule } from '../nats-client/nats-client.module';
 import { PaymentsController } from './payments.controller';
-import { AuthorizationMiddleware } from 'src/middleware/logger.middleware';
+import { AuthorizationMiddleware } from '../middleware/logger.middleware';
 
 @Module({
   imports: [NatsClientModule],
