@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mysql-test:
+    image: mysql:8.0
+    container_name: nestjs-mysql-test
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: nestjs_db
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testuser123
+    ports:
+      - "3307:3306" # Host port 3307 maps to container port 3306
+    volumes:
+      - mysql-data-test:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nats-server-test:
+    image: nats:latest
+    container_name: nats-server-test
+    ports:
+      - "4223:4222" # Host port 4223 maps to container port 4222
+
+volumes:
+  mysql-data-test:
