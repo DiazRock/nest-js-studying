@@ -1,0 +1,13 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testRegex": ".int-spec.ts$",
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "setupFiles": ["dotenv/config"],
+  "collectCoverageFrom": ["**/*.(t|j)s"],
+  "coverageDirectory": "./coverage",
+  "testEnvironment": "node",
+  "testTimeout": 30000
+}
