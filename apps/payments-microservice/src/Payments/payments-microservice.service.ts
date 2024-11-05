@@ -29,6 +29,7 @@ export class PaymentsService {
     });
     if (!user) {
       this.logger.error('User associated to the payment not found');
+      return null;
     }
     
     if (user.balance < createPaymentDto.amount) {
