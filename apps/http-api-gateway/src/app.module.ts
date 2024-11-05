@@ -1,8 +1,9 @@
-import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './Payment/payments.module';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { AuthorizationMiddleware } from './middleware/logger.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import ormconfig from './ormconfig';
 import { AuthModule } from './auth/auth.module';
 import { NatsClientModule } from './nats-client/nats-client.module';
 
@@ -12,6 +13,7 @@ import { NatsClientModule } from './nats-client/nats-client.module';
       ttl: 60000,
       limit: 10,
     }]),
+    TypeOrmModule.forRoot(ormconfig),
     UsersModule, 
     PaymentsModule,
     AuthModule,
@@ -21,12 +23,5 @@ import { NatsClientModule } from './nats-client/nats-client.module';
   providers: [],
 })
 export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer
-  //     .apply(AuthorizationMiddleware)
-  //     .forRoutes(
-  //       { path: '/users.*', method: RequestMethod.ALL },
-  //       { path: '/payments.*', method: RequestMethod.ALL }
-  //     ); // Set the routes that will use the middleware
-  // }
+
 }
