@@ -18,7 +18,8 @@ export class PaymentsController {
     if (error !== undefined) {
       this.logger.error('Error creating payment', error);
       throw new HttpException(error, HttpStatus.UNPROCESSABLE_ENTITY);
-    } 
+    }
+    return response; 
   }
 
   @Get('/:id')
@@ -30,7 +31,7 @@ export class PaymentsController {
   }
 
   @Get()
-  @HttpCode(201)
+  @HttpCode(200)
   async listPayment() {
     this.logger.log('Listing all existing payments');
     const listOfPayments = await lastValueFrom(this.natsClient.send({cmd: "getAllPayments"}, {}));

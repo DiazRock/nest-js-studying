@@ -1,0 +1,24 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  mysql-test:
+    image: mysql:8.0
+    container_name: nestjs-mysql-test
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: nestjs_test_db
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testuser123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data-test:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql-data-test:

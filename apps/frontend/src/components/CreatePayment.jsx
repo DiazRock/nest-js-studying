@@ -12,21 +12,18 @@ const CreatePayment = () => {
   const userId = useSelector((state) => state.loginReducer.userId);
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async ({label, inputAmount}, e) => {
-    e.preventDefault()
+  const onSubmit = async ({label, inputAmount}) => {
     try {
-      const amount = Number(inputAmount)
+      const amount = parseFloat(inputAmount);
       const reponse = await createPayment({ amount, userId, label }, jwtToken);
-      console.log('Payment created successfully', reponse);
       alert ('Payment created successfully :)');
       return true;
     } catch (error) {
-      alert ('Failed to createt payment :(');
+      alert (`Failed to createt payment :( ${error}`);
       console.error('Failed to create payment', error);
       return false;
     }
@@ -43,29 +40,27 @@ const CreatePayment = () => {
             type="text"  
             placeholder="Label" 
             {...register('label', {
-              required: true,
+              required: 'Please enter a label for the payment',
             })}
             />
         </Form.Field>
-        {errors.label && <p style={errorMessage}>Please enter a label for the payment</p>}
+        {errors.label && <p style={errorMessage}>{errors.label.message}</p>}
 
         <Form.Field>
             <input 
               type="number" 
               placeholder="Set amount of the payment" 
               {...register('inputAmount', {
-                required: true,
-                validator: (amount) => {
-                  if (Number(watch(amount)) > 0) {
-                    return true;
-                  }
-                  return false;
+                required: 'Amount is required',
+                validate: (value) => {
+                  const amount = parseFloat(value);
+                  return amount >= 0 || 'Amount must be a non negative number';
                 }
               })}
             />
 
         </Form.Field>
-        {errors.amount && <p style={errorMessage}>Amount must be a positive number</p>}
+        {errors.inputAmount && <p style={errorMessage}>{errors.inputAmount.message}</p>}
         <Button type="submit">Create Payment</Button>
     </Form>
   );

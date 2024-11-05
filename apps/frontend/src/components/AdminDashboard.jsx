@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 const AdminDashboard = ({permissions}) => {
-    console.log("Admin Dashboard", permissions);
     return (
         <nav>
             <ul className="nav-links">

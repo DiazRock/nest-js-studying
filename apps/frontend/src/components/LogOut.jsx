@@ -6,7 +6,6 @@ import { LogOutUser } from '../store/loginSlice';
 
 const LogOut = () => {
     const dispatch = useDispatch();
-    console.log('Log Out component');
     const onSubmit = (event) => {
         event.preventDefault();
         dispatch(LogOutUser());

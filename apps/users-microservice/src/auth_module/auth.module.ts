@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users-microservice.module';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/typeorm/entities/User';
+import { User } from '../typeorm/entities/User'
 
 dotenv.config();
 

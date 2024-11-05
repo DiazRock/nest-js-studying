@@ -1,9 +1,9 @@
 import jwtDecode from "jwt-decode";
 import { JwtService } from "@nestjs/jwt";
-import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { Injectable, Logger, UnauthorizedException, NotFoundException } from "@nestjs/common";
 import { JwtToken } from "./jwt-model/jwt-token.model";
 import { CreateUserDto } from "../users/dtos/CreateUser.dto";
-import { UsersService } from "src/users/users-microservice.service";
+import { UsersService } from "../users/users-microservice.service";
 
 @Injectable()
 export class AuthService {
@@ -28,6 +28,10 @@ export class AuthService {
   async login(user: CreateUserDto) {
     this.logger.log("Authenticating the user ", user);
     const users = await this.usersService.findByUsername(user.username);
+    if (users.length === 0) {
+      this.logger.error("User not found for username ", user.username);
+      throw new NotFoundException("Invalid credentials");
+    }
     this.logger.log("User founded ", users[0].id);
     const user_info = users[0];
     const id = user_info.id;

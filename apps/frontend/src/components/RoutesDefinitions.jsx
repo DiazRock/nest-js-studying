@@ -19,7 +19,7 @@ const RoutesDefinitions = () => {
             <Route path="/create-payment" element={<CreatePayment/>} />
             <Route path="/list-payments" element={<ListPayments/>} />
             <Route path="/my-payments" element={<MyPayments/>} />
-            <Route path="/my-details" element={<MyDetails/>} />
+            <Route path="/my-details/:id" element={<MyDetails/>} />
             <Route path="/" element={<HomeComponent/>}/>
         </Routes>
     );
