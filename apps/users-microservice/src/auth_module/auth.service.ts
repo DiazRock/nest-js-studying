@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Injectable, Logger, UnauthorizedException, NotFoundException } from "@nestjs/common";
 import { JwtToken } from "./jwt-model/jwt-token.model";
 import { CreateUserDto } from "../users/dtos/CreateUser.dto";
-import { UsersService } from "src/users/users-microservice.service";
+import { UsersService } from "../users/users-microservice.service";
 
 @Injectable()
 export class AuthService {
